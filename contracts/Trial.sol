@@ -5,6 +5,12 @@ error InsufficientDepositBalance();
 
 contract Trial {
 
+    ChildContract immutable public child;
+    
+    constructor() {
+        child = new ChildContract();
+    }
+
     function deposit() public payable {
         if (msg.value == 0){
             revert InsufficientDepositBalance();
@@ -29,5 +35,16 @@ contract Trial {
 
     function funcB() public payable {
         funcA();
+    }
+
+    function checkEther(uint depositAmount) public payable {
+        require(depositAmount == msg.value, "Not equal");
+        payable(msg.sender).call{value:msg.value}("");
+    }
+}
+
+contract ChildContract {
+    constructor() {
+
     }
 }

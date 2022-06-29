@@ -9,19 +9,19 @@ error InsufficientWithdrawBalance();
 
 contract Vault {
 
-    AggregatorV3Interface immutable internal priceFeed;
-    Stablecoin immutable internal stablecoin;
+    AggregatorV3Interface immutable public priceFeed;
+    Stablecoin immutable public stablecoin;
     
     struct Balance{
         uint ethDeposited;
         uint coinBorrowed;
     }
 
-    mapping(address => Balance) vaultBalances;
+    mapping(address => Balance) private vaultBalances;
 
-    constructor(address _stablecoin) {
+    constructor() {
         priceFeed = AggregatorV3Interface(0x0715A7794a1dc8e42615F059dD6e406A6594651A);
-        stablecoin = Stablecoin(_stablecoin);
+        stablecoin = new Stablecoin();
     }
 
     function getEthUsdPrice() public view returns (uint adjustedPrice) {
@@ -63,7 +63,7 @@ contract Vault {
         // mulitply answer with 18 decimals to get ethTo Withdraw in wei
         uint ethToWithdraw = (coinAmount * 1e26) / getEthUsdPrice();
 
-        // get minimum between ether to be withdrawn and ether aavailable in user account
+        // get minimum between ether to be withdrawn and ether available in user account
         if(ethToWithdraw > vaultBalances[msg.sender].ethDeposited) {
             ethToWithdraw = vaultBalances[msg.sender].ethDeposited;
         }
@@ -77,6 +77,12 @@ contract Vault {
         vaultBalances[msg.sender].ethDeposited -= ethToWithdraw;
         vaultBalances[msg.sender].coinBorrowed -= coinAmount;
     }
+
+    function getVaultBalances() public view returns (uint, uint) {
+        Balance memory myBalance = vaultBalances[msg.sender];
+        return (myBalance.ethDeposited, myBalance.coinBorrowed);
+    }
 }
+
 
 // vault address: 0x8B02fa275Fcc061813E6b94c556e320d63Eb46de
