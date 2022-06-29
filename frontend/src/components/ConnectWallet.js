@@ -4,10 +4,13 @@ import { AppContext } from '../App.js';
 
 function ConnectWallet() {
 
-  const {walletAddress, 
-        setWalletAddress, 
-        provider, 
-        setProvider} = useContext(AppContext);
+  const {accounts,
+        setAccounts,
+        setSigner,
+        setProvider,
+      } = useContext(AppContext);
+
+  let myAccounts;
 
   // Requests access to the user's META MASK WALLET
   // https://metamask.io
@@ -19,10 +22,10 @@ function ConnectWallet() {
       console.log('detected');
 
       try {
-        const accounts = await window.ethereum.request({
+        myAccounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
-        setWalletAddress(accounts[0]);
+        setAccounts(myAccounts);
       } catch (error) {
         console.log('Error connecting...');
       }
@@ -38,6 +41,8 @@ function ConnectWallet() {
       await requestAccount();
       const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
       setProvider(web3Provider);
+      const signer = web3Provider.getSigner(myAccounts[0]);
+      setSigner(signer)
     }
   }
 
@@ -45,8 +50,9 @@ function ConnectWallet() {
     <>
         <header>
         {
-            walletAddress ?
-            <p>Wallet Address: {walletAddress}</p> :
+            accounts ?
+            <p>Wallet Address: {accounts[0]}</p>
+            :
             <button onClick={connectWallet}>Connect Wallet</button>
         }   
         </header>

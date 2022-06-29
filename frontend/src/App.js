@@ -1,28 +1,50 @@
-import { useState, createContext } from "react";
-// import { ethers } from 'ethers';
+import { useState, useEffect, createContext } from "react";
+import { ethers } from 'ethers';
+import VAULT_ABI from './artifacts/contracts/Vault.sol/Vault.json';
 import ConnectWallet from './components/ConnectWallet.js';
 import DepositForm from './components/DepositForm.js';
+import WithdrawForm from './components/WithdrawForm.js';
 
 export const AppContext = createContext();
 
 function App() {
 
-  const [walletAddress, setWalletAddress] = useState("");
-  const [provider, setProvider] = useState("");
+  const [accounts, setAccounts] = useState(null);
+  const [signer, setSigner] = useState(null)
+  const [provider, setProvider] = useState(null);
+  const [vaultContract, setVaultContract] = useState(null);
 
   const contextObj = {
-    walletAddress: walletAddress,
-    setWalletAddress: setWalletAddress,
-    provider:provider,
-    setProvider: setProvider,
+    accounts,
+    setAccounts,
+    signer,
+    setSigner,
+    provider,
+    setProvider,
+    vaultContract,
+    setVaultContract
   };
+
+  useEffect(() => {
+    // const vaultContractAddress = ""
+    // const myContract = new ethers.Contract(vaultContractAddress, VAULT_ABI, provider);
+    // setVaultContract(myContract);
+  }, [provider]);
 
   return (
     <AppContext.Provider value={contextObj}>
         <>
           <ConnectWallet/>
           <h3>Send ETH as collateral, get MSC Stablecoin as loan!</h3>
-          <DepositForm/>
+          {accounts ? 
+            <>
+              <DepositForm/> 
+              <br/>
+              <WithdrawForm/>
+            </>
+            : 
+            <p>Please connect wallet to proceed!</p>
+          }
         </>
     </AppContext.Provider>
 
