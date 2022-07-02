@@ -44,8 +44,8 @@ describe("Vault contract", function () {
         const [ethDeposited, coinBorrowed] = await vault.getVaultBalances();
         assert.isTrue(ethDeposited.eq(ethers.utils.parseEther('0.001')));
 
-        assert.isTrue((await stablecoin.balanceOf(deployer.address)).eq(ethers.BigNumber.from(1)));
-        assert.isTrue(coinBorrowed.eq(ethers.BigNumber.from("1")));
+        assert.isTrue((await stablecoin.balanceOf(deployer.address)).gt(ethers.utils.parseEther('0')));
+        assert.isTrue(coinBorrowed.gt(ethers.utils.parseEther('0')));
     });
 
     it("should withdraw eth on correct repayment of stablecoin", async () => {

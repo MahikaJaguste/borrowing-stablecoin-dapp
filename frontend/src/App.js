@@ -30,9 +30,9 @@ function App() {
 
   useEffect(() => {
     // rinkeby
-    // const vaultContractAddress = "0x7123a6F01904AdE063cD341a458b967f619b44c3"
+    const vaultContractAddress = "0x1BFb3567AD7FE3Df33b9a45F3038Cf545B4418E9"
     // mumbai
-    const vaultContractAddress = "0x883638BC764CD866658832c7dC0Ee7b1300D8a89";
+    // const vaultContractAddress = "";
     const myContract = new ethers.Contract(vaultContractAddress, VAULT_ABI.abi, provider);
     setVaultContract(myContract);
   }, [provider]);

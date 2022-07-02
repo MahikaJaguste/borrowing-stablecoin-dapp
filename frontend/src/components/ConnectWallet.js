@@ -67,7 +67,7 @@ function ConnectWallet() {
             <p>Wallet Address: {accounts[0]}</p>
             :
             <>
-              <Button variant="outline-primary" onClick={connectWallet}>Conenct Wallet</Button>
+              <Button variant="outline-primary" onClick={connectWallet}>Connect Wallet</Button>
               <br/>
               <br/>
             </>

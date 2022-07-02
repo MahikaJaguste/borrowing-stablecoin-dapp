@@ -30,8 +30,8 @@ main()
 }); // Calling the function to deploy the contract 
 
 // Rinkeby
-// vault address: 0xD74aC4600fA3095D0eB2a27597454d4dcF985c80
-// stablecoin address: 0x650faEA14c754319cDAB5A39D56e66619fA720D6
+// vault address: 0x1BFb3567AD7FE3Df33b9a45F3038Cf545B4418E9
+// stablecoin address: 0xed57af2595bF660A08b241A19E799280107af330
 
 // Mumbai
 // vault address: 

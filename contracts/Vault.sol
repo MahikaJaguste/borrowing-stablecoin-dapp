@@ -39,8 +39,7 @@ contract Vault {
         }
  
         // 8 decimals to get price of 1 ETH in USD
-        // 18 decimals to get msg.value in ETH
-        uint coinsToBorrow = (msg.value * getEthUsdPrice()) / 1e26;
+        uint coinsToBorrow = (msg.value * getEthUsdPrice()) / 1e8;
 
         if(coinsToBorrow == 0){
             revert InsufficientDepositBalance();

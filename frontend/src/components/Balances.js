@@ -18,7 +18,7 @@ function Balances() {
         if(signer){
             const [result1, result2] = await vaultContract.connect(signer).getVaultBalances();
             setEthDeposited((ethers.utils.formatEther(result1)).toString());
-            setCoinBorrowed(result2.toString());
+            setCoinBorrowed(ethers.utils.formatEther(result2).toString());
         }
     }
 
