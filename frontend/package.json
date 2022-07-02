@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "[my-framework] build --output public",
+    "build": "create-react-app build --output public",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
