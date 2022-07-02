@@ -8,10 +8,10 @@ function WithdrawForm() {
 
   const [coinReturn, setCoinReturn] = useState(0);
 
-  const handleSubmit =  (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    alert(`The amount of coin you entered was: ${coinReturn}`);
-    // await vaultContract.connect(signer).withdraw(coinReturn);
+    // alert(`The amount of coin you entered was: ${coinReturn}`);
+    await vaultContract.connect(signer).withdraw(coinReturn);
   }
 
   return (
@@ -21,8 +21,9 @@ function WithdrawForm() {
         <input 
             type="number" 
             min="0" 
+            step="any"
             onChange={(e) => {
-                    let temp_val = parseInt(e.target.value);
+                    let temp_val = parseFloat(e.target.value);
                     if(temp_val >= 0){
                         setCoinReturn(e.target.value);
                     } 

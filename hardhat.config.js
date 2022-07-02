@@ -20,13 +20,18 @@ require('@nomiclabs/hardhat-ethers');
       accounts: {mnemonic: mnemonic}
     },
     mumbai: {
-      url: `https://polygon-mumbai.g.alchemy.com/v2/${infuraProjectId}`,
+      url: `https://polygon-mumbai.g.alchemy.com/v2/${alchemyAPIKey}`,
       accounts: {mnemonic: mnemonic}
     },
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${infuraProjectId}`,
       accounts: {mnemonic: mnemonic}
     },
+    hardhat: {
+      forking: {
+        url: `https://polygon-mumbai.g.alchemy.com/v2/${alchemyAPIKey}`,
+      }
+    }
   },
 };
 

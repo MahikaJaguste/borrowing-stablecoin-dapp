@@ -26,9 +26,9 @@ function App() {
   };
 
   useEffect(() => {
-    // const vaultContractAddress = ""
-    // const myContract = new ethers.Contract(vaultContractAddress, VAULT_ABI, provider);
-    // setVaultContract(myContract);
+    const vaultContractAddress = "0xD74aC4600fA3095D0eB2a27597454d4dcF985c80"
+    const myContract = new ethers.Contract(vaultContractAddress, VAULT_ABI.abi, provider);
+    setVaultContract(myContract);
   }, [provider]);
 
   return (
