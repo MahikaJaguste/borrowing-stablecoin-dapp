@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { ethers } from 'ethers';
 import { AppContext } from '../App.js';
-// import "cryptocompare"
+import { Card, Form, Button } from 'react-bootstrap';
 const cc = require('cryptocompare');
 
 
@@ -12,6 +12,7 @@ function DepositForm() {
   const [ethDeposit, setEthDeposit] = useState(0);
   const [ethPrice, setEthPrice] = useState(0);
   const [coinToBeBorrowed, setCoinToBeBorrowed] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getEthPrice();
@@ -24,7 +25,6 @@ function DepositForm() {
 
   useEffect(() => {
     if(ethDeposit > 0){
-      console.log("eh", Math.floor(ethDeposit * ethPrice))
       setCoinToBeBorrowed(Math.floor(ethDeposit * ethPrice));
     }
     else{
@@ -35,34 +35,60 @@ function DepositForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     // alert(`The amount of ether you entered was: ${ethDeposit}`);
-    await vaultContract.connect(signer).deposit({ value: ethers.utils.parseEther(ethDeposit) });
+    if(ethDeposit){
+      setIsLoading(true);
+      try{
+        const txn = await vaultContract.connect(signer).deposit({ value: ethers.utils.parseEther(ethDeposit) });
+        await txn.wait();
+      }
+      catch(err){
+        alert('Transaction failed');
+      }
+      setIsLoading(false);  
+    }   
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>Enter amount of Ether you want to deposit:
-        <br/>
-        <input 
-            type="number" 
-            min="0"
-            step="any" 
-            onChange={(e) => {
-                    let temp_val = parseFloat(e.target.value);
-                    if(temp_val >= 0){
-                        setEthDeposit(e.target.value);
+  
+    <Card>
+    <Card.Body>
+
+    <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>ETH Deposit</Form.Label>
+          <Form.Control type="number" 
+                min="0"
+                step="any" 
+                onChange={(e) => {
+                        let temp_val = parseFloat(e.target.value);
+                        if(temp_val >= 0){
+                            setEthDeposit(e.target.value);
+                        }
+                        if(e.target.value === ''){
+                          setEthDeposit(0);
+                        }
                     }
-                    if(e.target.value === ''){
-                      setEthDeposit(0);
-                    }
-                }
-            }
-        />
-        {coinToBeBorrowed ? <p>Approx coin that can be borrowed: {coinToBeBorrowed}</p> : <></>}
-      </label>
-      <input type="submit" />
-    </form>
+                } />
+        </Form.Group>
+        <Form.Text className="text-muted">
+        {coinToBeBorrowed ? <p>You can borrow approximately {coinToBeBorrowed} MSC.</p> : <p>Enter deposit value in ETH</p>}
+        </Form.Text>
+        <Button
+          variant="primary"
+          disabled={isLoading}
+          type="submit"
+        >
+          {isLoading ? 'Processing...' : 'Deposit'}
+        </Button>
+        </Form>
+
+    </Card.Body>
+    </Card>
+
   )
 }
+
+
 
 
 export default DepositForm;

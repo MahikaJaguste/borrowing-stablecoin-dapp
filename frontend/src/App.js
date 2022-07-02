@@ -29,16 +29,24 @@ function App() {
   };
 
   useEffect(() => {
-    const vaultContractAddress = "0x7123a6F01904AdE063cD341a458b967f619b44c3"
+    // rinkeby
+    // const vaultContractAddress = "0x7123a6F01904AdE063cD341a458b967f619b44c3"
+    // mumbai
+    const vaultContractAddress = "0x883638BC764CD866658832c7dC0Ee7b1300D8a89";
     const myContract = new ethers.Contract(vaultContractAddress, VAULT_ABI.abi, provider);
     setVaultContract(myContract);
   }, [provider]);
 
   return (
     <AppContext.Provider value={contextObj}>
-        <center>
+        <center style={{
+                paddingLeft: "500px",
+                paddingRight: "500px",
+                paddingTop: "50px"
+                }}>
           <ConnectWallet/>
           <h3>Send ETH as collateral, get MSC Stablecoin as loan!</h3>
+          <br/>
           {accounts ? 
             <>
               <Balances/>

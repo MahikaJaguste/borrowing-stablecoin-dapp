@@ -1,6 +1,7 @@
 import { useEffect, useContext } from "react";
 import { ethers } from 'ethers';
 import { AppContext } from '../App.js';
+import { Button } from 'react-bootstrap';
 
 function ConnectWallet() {
 
@@ -65,7 +66,11 @@ function ConnectWallet() {
             accounts ?
             <p>Wallet Address: {accounts[0]}</p>
             :
-            <button onClick={connectWallet}>Connect Wallet</button>
+            <>
+              <Button variant="outline-primary" onClick={connectWallet}>Conenct Wallet</Button>
+              <br/>
+              <br/>
+            </>
         }   
         </header>
     </>

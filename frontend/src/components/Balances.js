@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { AppContext } from '../App.js';
 import { ethers } from "ethers";
+import { Container, Row, Col, Card } from 'react-bootstrap';
 
 function Balances() {
 
@@ -23,9 +24,29 @@ function Balances() {
 
     return (
         <>
-        <p>Ether deposited:</p> {ethDeposited ? ethDeposited : <p>Loading</p>}
-        <p>CoinBorrowed</p> {coinBorrowed ? coinBorrowed : <p>Loading</p>}
-        </>
+        
+        <Container>
+        <Row>
+          <Col>
+          <Card>
+            <Card.Body>
+                <p>ETH deposited:</p> {ethDeposited ? ethDeposited : <p>Loading</p>}
+            </Card.Body>
+          </Card>
+          </Col>
+                
+          <Col>
+          <Card>
+            <Card.Body>
+                <p>MSC Borrowed:</p> {coinBorrowed ? coinBorrowed : <p>Loading</p>}
+            </Card.Body>
+          </Card>
+          
+          </Col>
+        </Row>
+      </Container>
+      </>
+  
     )
 }
 

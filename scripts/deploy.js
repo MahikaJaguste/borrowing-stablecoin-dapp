@@ -17,8 +17,8 @@ async function main() {
     await vault.deployed(); // waiting for the contract to be deployed
     console.log("Vault deployed to:", vault.address); // Returning the contract address
 
-    const result = await vault.getEthUsdPrice();
-    console.log(result);
+    // const result = await vault.getEthUsdPrice();
+    // console.log(result);
 
 }
   
