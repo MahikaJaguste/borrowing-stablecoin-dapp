@@ -5,20 +5,18 @@ import { AppContext } from '../App.js';
 function WithdrawForm() {
 
   const {signer, vaultContract} = useContext(AppContext);
-
-  const [coinReturn, setCoinReturn] = useState(0);
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     // alert(`The amount of coin you entered was: ${coinReturn}`);
-    await vaultContract.connect(signer).withdraw(coinReturn);
+    await vaultContract.connect(signer).withdraw();
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <label>Enter amount of MSC you want to return:
         <br/>
-        <input 
+        {/* <input 
             type="number" 
             min="0" 
             step="any"
@@ -29,7 +27,7 @@ function WithdrawForm() {
                     } 
                 }
             }
-        />
+        /> */}
       </label>
       <input type="submit" />
     </form>

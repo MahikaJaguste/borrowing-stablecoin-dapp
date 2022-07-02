@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useEffect, useContext } from "react";
 import { ethers } from 'ethers';
 import { AppContext } from '../App.js';
 
@@ -9,6 +9,17 @@ function ConnectWallet() {
         setSigner,
         setProvider,
       } = useContext(AppContext);
+
+  useEffect(()=> {
+    const data = window.localStorage.getItem('accounts');
+    if (data !== null) {
+      setAccounts(JSON.parse(data));
+      const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
+      setProvider(web3Provider);
+      const signer = web3Provider.getSigner(JSON.parse(data)[0]);
+      setSigner(signer)
+    }
+  }, [])
 
   let myAccounts;
 
@@ -26,6 +37,7 @@ function ConnectWallet() {
           method: "eth_requestAccounts",
         });
         setAccounts(myAccounts);
+        window.localStorage.setItem('accounts', JSON.stringify(myAccounts));
       } catch (error) {
         console.log('Error connecting...');
       }

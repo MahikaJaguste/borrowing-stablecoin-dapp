@@ -4,6 +4,9 @@ import VAULT_ABI from './artifacts/contracts/Vault.sol/Vault.json';
 import ConnectWallet from './components/ConnectWallet.js';
 import DepositForm from './components/DepositForm.js';
 import WithdrawForm from './components/WithdrawForm.js';
+import Balances from './components/Balances.js';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const AppContext = createContext();
 
@@ -26,18 +29,20 @@ function App() {
   };
 
   useEffect(() => {
-    const vaultContractAddress = "0xD74aC4600fA3095D0eB2a27597454d4dcF985c80"
+    const vaultContractAddress = "0x7123a6F01904AdE063cD341a458b967f619b44c3"
     const myContract = new ethers.Contract(vaultContractAddress, VAULT_ABI.abi, provider);
     setVaultContract(myContract);
   }, [provider]);
 
   return (
     <AppContext.Provider value={contextObj}>
-        <>
+        <center>
           <ConnectWallet/>
           <h3>Send ETH as collateral, get MSC Stablecoin as loan!</h3>
           {accounts ? 
             <>
+              <Balances/>
+              <br/>
               <DepositForm/> 
               <br/>
               <WithdrawForm/>
@@ -45,7 +50,7 @@ function App() {
             : 
             <p>Please connect wallet to proceed!</p>
           }
-        </>
+        </center>
     </AppContext.Provider>
 
   );

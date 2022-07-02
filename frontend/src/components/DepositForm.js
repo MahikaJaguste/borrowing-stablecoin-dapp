@@ -1,12 +1,36 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { ethers } from 'ethers';
 import { AppContext } from '../App.js';
+// import "cryptocompare"
+const cc = require('cryptocompare');
+
 
 function DepositForm() {
 
   const {signer, vaultContract} = useContext(AppContext);
 
   const [ethDeposit, setEthDeposit] = useState(0);
+  const [ethPrice, setEthPrice] = useState(0);
+  const [coinToBeBorrowed, setCoinToBeBorrowed] = useState(0);
+
+  useEffect(() => {
+    getEthPrice();
+  }, []);
+
+  async function getEthPrice() {
+    const result = await cc.price('ETH', 'USD');
+    setEthPrice(result.USD);
+  }
+
+  useEffect(() => {
+    if(ethDeposit > 0){
+      console.log("eh", Math.floor(ethDeposit * ethPrice))
+      setCoinToBeBorrowed(Math.floor(ethDeposit * ethPrice));
+    }
+    else{
+      setCoinToBeBorrowed(0);
+    }
+  }, [ethDeposit]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,10 +50,14 @@ function DepositForm() {
                     let temp_val = parseFloat(e.target.value);
                     if(temp_val >= 0){
                         setEthDeposit(e.target.value);
-                    } 
+                    }
+                    if(e.target.value === ''){
+                      setEthDeposit(0);
+                    }
                 }
             }
         />
+        {coinToBeBorrowed ? <p>Approx coin that can be borrowed: {coinToBeBorrowed}</p> : <></>}
       </label>
       <input type="submit" />
     </form>
